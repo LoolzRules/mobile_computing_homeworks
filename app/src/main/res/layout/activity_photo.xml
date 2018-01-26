@@ -11,13 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_process"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Processing image. May take several minutes (A LOT OF TIME)"
-            android:visibility="gone" />
-
         <ImageView
             android:id="@+id/iv_photo"
             android:layout_width="match_parent"
@@ -28,7 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="makeAPhoto"
-            android:text="Take a photo" />
+            android:text="@string/take_a_photo" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="chooseAPhoto"
+            android:text="@string/choose_a_photo" />
 
         <Button
             android:id="@+id/bt_red"
@@ -36,7 +35,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:onClick="redPhoto"
-            android:text="Make it red"
+            android:text="@string/make_it_red"
             android:visibility="gone" />
 
     </LinearLayout>

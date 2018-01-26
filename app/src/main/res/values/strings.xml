@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Makar\'s Homeworks</string>
+    <string name="app_name">Makar\'s Homework</string>
     <string name="refresh">Refresh</string>
+    <string name="choose_a_photo">Choose a photo</string>
+    <string name="make_it_red">Make it red</string>
+    <string name="take_a_photo">Take a photo</string>
 </resources>

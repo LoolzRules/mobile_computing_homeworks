@@ -7,14 +7,15 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class ActivityPhoto extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private ImageView mImage;
     private TextView mText;
+    private Button mRed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class ActivityPhoto extends AppCompatActivity {
         setContentView(R.layout.activity_photo);
 
         mImage = findViewById(R.id.iv_photo);
+        mText = findViewById(R.id.tv_process);
+        mRed = findViewById(R.id.bt_red);
 
         // Hacky way to disable exception
         if (Build.VERSION.SDK_INT >= 24) {
@@ -61,23 +65,8 @@ public class ActivityPhoto extends AppCompatActivity {
         startActivityForResult(photoIntent, 2);
     }
 
-    public void editLastPhoto(View button) {
-        mText.setVisibility(View.VISIBLE);
-        Bitmap bitmap = ((BitmapDrawable) mImage.getDrawable()).getBitmap();
-        int pixel;
-        for (int x = 1; x < bitmap.getWidth(); x++) {
-            for (int y = 1; y < bitmap.getHeight(); y++) {
-                pixel = bitmap.getPixel(x, y);
-                bitmap.setPixel(x, y, Color.argb(
-                        Color.alpha(pixel),
-                        Color.red(0),
-                        Color.green(0),
-                        Color.blue(pixel)
-                ));
-            }
-        }
-        mImage.setImageBitmap(bitmap);
-        mText.setVisibility(View.GONE);
+    public void redPhoto(View button) {
+        new ProcessImageTask().execute();
     }
 
     @Override
@@ -99,10 +88,44 @@ public class ActivityPhoto extends AppCompatActivity {
                 Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
                 mImage.setImageBitmap(rotatedBitmap);
 
+                mRed.setVisibility(View.VISIBLE);
+
             } catch (IOException e) {
                 Toast.makeText(this, "Error occurred while loading image", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
+        }
+    }
+
+    private class ProcessImageTask extends AsyncTask<Bitmap, Void, Bitmap> {
+
+        @Override
+        protected void onPreExecute() {
+            mText.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Bitmap doInBackground(Bitmap... bitmaps) {
+            Bitmap bitmap = ((BitmapDrawable) mImage.getDrawable()).getBitmap();
+            int pixel;
+            for (int x = 0; x < bitmap.getWidth(); x++) {
+                for (int y = 0; y < bitmap.getHeight(); y++) {
+                    pixel = bitmap.getPixel(x, y);
+                    bitmap.setPixel(x, y, Color.argb(
+                            Color.alpha(pixel),
+                            Color.red(pixel),
+                            Color.green(0),
+                            Color.blue(0)
+                    ));
+                }
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            mText.setVisibility(View.GONE);
+            mImage.setImageBitmap(bitmap);
         }
     }
 

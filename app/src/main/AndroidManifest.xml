@@ -52,6 +52,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.loolzrules.mobile_computing.ActivityMain" />
         </activity>
+
+        <service
+            android:name=".MyService"
+            android:exported="false" />
     </application>
 
 </manifest>

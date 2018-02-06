@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context="com.loolzrules.mobile_computing.ActivityMain">
 
     <Button
@@ -29,5 +30,17 @@
         android:layout_height="wrap_content"
         android:onClick="launchCamera"
         android:text="Camera and DIP" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="launchService"
+        android:text="Start Service" />
+
+    <TextView
+        android:id="@+id/tv_service_progress"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="Service progress is displayed here" />
 
 </LinearLayout>
